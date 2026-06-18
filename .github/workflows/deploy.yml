@@ -1,0 +1,26 @@
+name: Deploy Node App
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Restart App
+        run: |
+          pkill -f "node index.js" || true
+          nohup node index.js > app.log 2>&1 &
