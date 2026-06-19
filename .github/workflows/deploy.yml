@@ -12,15 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Restart App
+      - name: Deploy with PM2
         run: |
-          pkill -f "node index.js" || true
-          nohup node index.js > app.log 2>&1 &
+          if pm2 describe node-app > /dev/null; then
+            pm2 restart node-app
+          else
+            pm2 start index.js --name node-app
+          fi
+          pm2 save
