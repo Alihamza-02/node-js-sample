@@ -1,0 +1,7 @@
+services:
+  node-app:
+    build: .
+    container_name: node-app
+    ports:
+      - "5000:5000"
+    restart: always

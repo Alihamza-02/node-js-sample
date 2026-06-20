@@ -12,11 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy with PM2
+      - name: Deploy with Docker Compose
         run: |
-          if pm2 describe node-app > /dev/null; then
-            pm2 restart node-app
-          else
-            pm2 start index.js --name node-app
-          fi
-          pm2 save
+          docker compose down || true
+          docker compose up -d --build
